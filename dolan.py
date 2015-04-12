@@ -1,4 +1,4 @@
-import SimpleIRC
+import JustIRC
 import translator
 import commands
 import time
@@ -11,7 +11,7 @@ def get_time_string():
 
 class Dolan:
   def __init__(self):
-    self.bot = SimpleIRC.IRCConnection()
+    self.bot = JustIRC.IRCConnection()
     self.config = json.loads(open("config.json").read())
     self.channels = self.config["channels"]
     self.log_level = 1
