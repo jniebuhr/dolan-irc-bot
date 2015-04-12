@@ -3,7 +3,7 @@ import translator
 import commands
 import time
 import json
-
+import random
 
 def get_time_string():
   return time.strftime("[%d-%m-%Y %H:%M:%S]")
@@ -13,7 +13,7 @@ class Dolan:
   def __init__(self):
     self.bot = SimpleIRC.IRCConnection()
     self.config = json.loads(open("config.json").read())
-    self.channel = self.config["channel"]
+    self.channels = self.config["channels"]
     self.log_level = 1
     
     self.initBot()
@@ -33,11 +33,12 @@ class Dolan:
     
   def onWelcome(self, bot):
     self.log("Welcome message sent.", 1)
-    self.bot.join_channel(self.channel)
-    self.bot.send_message(self.channel, translator.translate("Hello kids, Donald is back"))
+    for channel in self.channels:
+        self.bot.join_channel(channel)
+        self.bot.send_message(channel, translator.translate("Hello kids, Donald is back"))
   
   def onPrivateMessage(self, bot, sender, message):
-    self.onMessage(bot, self.channel, sender, message)
+    self.onMessage(bot, random.choice(self.channels), sender, message)
   
   def onMessage(self, bot, channel, sender, message):
     if len(message.split()) == 0: #Stops people from crashing bot with " "
